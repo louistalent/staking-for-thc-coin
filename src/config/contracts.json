@@ -1,0 +1,25 @@
+{
+    "97": {
+        "tokens": {
+            "THC": {
+                "address": "0x5697A61D1DD5E2bbD730Dce55bc84cbB386d1444",
+                "decimals": 9
+            }
+        },
+        "staking": {
+            "THC": "0xc02818945564D27dA1F98eF5d6289BF302743c6C"
+        }
+    },
+    "56": {
+        "router": "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+        "tokens": {
+            "THC": {
+                "address": "0x56083560594e314b5cdd1680ec6a493bb851bbd8",
+                "decimals": 9
+            }
+        },
+        "staking": {
+            "THC": "0x56083560594e314b5cdd1680ec6a493bb851bbd8"
+        }
+    }
+}
