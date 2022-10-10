@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { useMetaMask } from 'metamask-react';
-import WalletConnect from "@walletconnect/client";//add
-import WalletConnectQRCodeModal from "@walletconnect/qrcode-modal";//add
-import { errHandler, tips, /* toValue, */ fromValue, fromBigNum } from './util';
+// import WalletConnect from "@walletconnect/client";//add
+// import WalletConnectQRCodeModal from "@walletconnect/qrcode-modal";//add
+import { errHandler, tips, /* toValue, */ fromValue, fromBigNum, walletconnect } from './util';
+import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
+import { useWallet } from './hooks/useWallet';
+
 
 import "./layout.scss"
 import "./assets/css/stars.css"
 import Meta from './assets/img/metamask.png';
 import Trust from './assets/img/trust.png';
-
-
-
-
-
+import Coinbase from './assets/img/coinbase.png';
+import { useWebContext } from "./context";
 
 
 const Layout = (props: any) => {
-
-
+	const { active, connect, chainId } = useWallet();
+	const { account } = useWeb3React();
 	const [scrolling, setScrolling] = React.useState<boolean>(false);
 	const [up, setUp] = React.useState<boolean>(false);
-	const { status, connect, account, chainId, ethereum } = useMetaMask();
+	const { activate, connector } = useWeb3React();
+	const [state, { dispatch }] = useWebContext();
 
 
 	useEffect(() => {
@@ -46,7 +46,32 @@ const Layout = (props: any) => {
 
 	const [WalletConnectModal, setWalletConnectModal] = useState(false);
 
-
+	const handleConnect = async (key: string) => {
+		try {
+			await connect(key);
+			setWalletConnectModal(!WalletConnectModal)
+			if (account !== undefined) {
+				dispatch({
+					type: "disconnect_able",
+					payload: true
+				});
+			} else {
+				dispatch({
+					type: "disconnect_able",
+					payload: false
+				});
+			}
+			//wallet modal cancel
+		} catch (err) {
+			console.log({ err });
+		}
+	};
+	const WalletDisconectCall = () => {
+		dispatch({
+			type: 'disconnect_able',
+			payload: false
+		})
+	}
 
 	const WalletModal = () => {
 		return (
@@ -56,122 +81,41 @@ const Layout = (props: any) => {
 				<div className="modal-body wallet-modal" >
 					<div className='justify'>
 						<div className='wallet-icon-hover'>
-							<a onClick={() => MetamaskConnect()}>
+							<a onClick={() => handleConnect('injected')}>
 								<img src={Meta} className='justify wallet-imgs' alt='metamask' />
 							</a>
 						</div>
 						<div className='wallet-icon-hover'>
-							<a onClick={walletConnect}>
+							<a onClick={() => handleConnect('walletconnect')}>
 								<img src={Trust} className='justify wallet-imgs' alt='Trust' />
 							</a>
+						</div>
+						<div className='justify'>
+							<div className='wallet-icon-hover'>
+								<a onClick={() => handleConnect('walletlink')}>
+									<img src={Coinbase} className='justify wallet-imgs' alt='Trust' />
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		)
 	}
-	const walletConnect = async () => {
-		// @ts-ignore
-		const walletConnector = window.mywallet = new WalletConnect({
-			bridge: "https://bridge.walletconnect.org" // Required
-		});
-
-		walletConnector.killSession()
-
-		// Check if connection is already established
-		if (!walletConnector.connected) {
-			console.log("Creating session")
-			// create new session
-			walletConnector.createSession().then(() => {
-				// get uri for QR Code modal
-				const uri = walletConnector.uri;
-				// display QR Code modal
-				WalletConnectQRCodeModal.open(uri, () => {
-					console.log("QR Code Modal closed");
-				})
-			})
-		}
-
-		// Subscribe to connection events
-		walletConnector.on("connect", (error: any, payload: any) => {
-			if (error) {
-				throw error;
-			}
-
-			// Close QR Code Modal
-			WalletConnectQRCodeModal.close();
-
-			// Get provided accounts and chainId
-			// const { accounts, chainId } = payload.params[0];
-
-			// @ts-ignore
-			walletConnector.getAccounts().then(result => {
-				// Returns the accounts
-				// @ts-ignore	
-				const account = result.find((account) => account.network === 714);
-				console.log("ACCOUNT:", account)
-				console.log("WALLET CONNECT ACCOUNTS RESULTS " + account.address);
-				// @ts-ignore
-				console.log("ADDR:", crypto.decodeAddress(account.address))
-				// context.({
-				// 	"wallet": {
-				// 		"walletconnect": walletConnector,
-				// 		"address": account.address,
-				// 		"account": account,
-				// 	}
-				// }, () => {
-				// 	props.history.push("/stake")
-				// })
-				//@ts-ignore
-			}).catch(error => {
-				// Error returned when rejected
-				console.error(error);
-			})
-		})
-		//@ts-ignore
-		walletConnector.on("session_update", (error, payload) => {
-			if (error) {
-				throw error;
-			}
-
-			// Get updated accounts and chainId
-			// const { accounts, chainId } = payload.params[0];
-		})
-		//@ts-ignore
-		walletConnector.on("disconnect", (error, payload) => {
-			if (error) {
-				throw error;
-			}
-
-		})
-
-	}
-	const MetamaskConnect = () => {
-		// const disconnect = () => {
-		// 	window.ethereum.request({ method: "eth_chainId" });
-		// }
-		if (status === "initializing")
-			return tips('Synchronisation with MetaMask ongoing...')
-		if (status === "unavailable")
-			return tips('MetaMask not avaliable');
-		if (status === "notConnected") {
-			// MetaMask connect
-			return connect();
-		}
-		if (status === "connecting")
-			return tips('Connecting...');
-		if (status === "connected") {
-			return tips('Connected');
-
-			// //@ts-ignore
-			// account && account.length !== 0 &&
-			// //@ts-ignore
-			// account.slice(0, 4) + '...' + account.slice(account.length - 4, account.length)
-		}
-	}
 	useEffect(() => {
-		MetamaskConnect();
-	}, [status, account, chainId, ethereum])
+		if (account !== undefined) {
+			dispatch({
+				type: "disconnect_able",
+				payload: true
+			});
+		} else {
+			dispatch({
+				type: "disconnect_able",
+				payload: false
+			});
+		}
+		console.log(chainId)
+	}, [account, chainId])
 
 	return (
 		<>
@@ -186,10 +130,10 @@ const Layout = (props: any) => {
 						<Link className="navbar-brand heading-black" to="./">
 							THC Staking
 						</Link>
-						<button onClick={() => setWalletConnectModal(true)} className="navbar-toggler navbar-toggler-right border-0 collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+						{/* <button onClick={() => setWalletConnectModal(true)} className="navbar-toggler navbar-toggler-right border-0 collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-						</button>
-						<div className="navbar-collapse collapse" id="navbarCollapse">
+						</button> */}
+						<div className="navbar-collapse collapse dis-f">
 							<ul className="navbar-nav ml-auto flex-align-center align-items-center">
 								{/* <li className="nav-item">
 									<Link className="nav-link page-scroll" to="./">Home</Link>
@@ -200,12 +144,9 @@ const Layout = (props: any) => {
 								<li className="nav-item">
 									<a className="nav-link page-scroll p-0">
 										{
-											account && account.length !== 0 ?
-												<button onClick={() => setWalletConnectModal(true)} className="btn btn-primary d-inline-flex flex-row align-items-center" id="loginButton">
-													{
-														// @ts-ignore
-														account.slice(0, 4) + '...' + account.slice(account.length - 4, account.length)
-													}
+											state.disconnect_able ?
+												<button onClick={() => { WalletDisconectCall() }} className="btn btn-primary d-inline-flex flex-row align-items-center" id="loginButton">
+													disconnect
 												</button>
 												:
 												<button onClick={() => setWalletConnectModal(true)} className="btn btn-primary d-inline-flex flex-row align-items-center" id="loginButton">
@@ -214,6 +155,14 @@ const Layout = (props: any) => {
 										}
 									</a>
 								</li>
+								<li className="nav-item">
+									<a className="nav-link page-scroll p-0">
+										{
+											state.disconnect_able && account && account.length !== 0 && account.slice(0, 4) + '...' + account.slice(account.length - 4, account.length)
+										}
+									</a>
+								</li>
+								{/* account.slice(0, 4) + '...' + account.slice(account.length - 4, account.length) */}
 							</ul>
 						</div>
 					</nav>
@@ -237,15 +186,16 @@ const Layout = (props: any) => {
 								<li><a style={{ color: "#f2a900" }} target='_blank' href="http://t.me/buytranshumancoin">Telegram</a></li>
 								<li><a style={{ color: "#f2a900" }} target='_blank' href="https://discord.gg/mj72jmyMTw">Discord</a></li>
 								<li><a style={{ color: "#f2a900" }} target='_blank' href="https://www.twitter.com/transhumancoin">Twitter</a></li>
-								<li><a style={{ color: "#f2a900" }} target='_blank' href="https://coinmarketcap.com/currencies/transhuman-coin/">Coin Matket Cap</a></li>
+								<li><a style={{ color: "#f2a900" }} target='_blank' href="https://coinmarketcap.com/currencies/transhuman-coin/">Coin Market Cap</a></li>
 							</ul>
 						</div>
 						<div className="col-sm-2">
-							<h5 style={{ color: "cyan" }}>TranshumanCoin</h5>
+							<h5 style={{ color: "cyan" }}>Transhuman Coin</h5>
 							<ul className="list-unstyled">
-								<li><a style={{ color: "cyan" }} target='_blank' href="https://www.transhumancoin.finance">Transhuman Site</a></li>
-								<li><a style={{ color: "cyan" }} target='_blank' href="https://www.transhumancoin.finance/shop">Our Shop</a></li>
+								<li><a style={{ color: "cyan" }} target='_blank' href="https://www.transhumancoin.finance">Transhuman Coin</a></li>
 								<li><a style={{ color: "cyan" }} target='_blank' href="https://p2p.valid.finance">Exchange Site</a></li>
+								<li><a style={{ color: "cyan" }} target='_blank' href="https://valid.finance">DeFi Platform</a></li>
+								<li><a style={{ color: "cyan" }} target='_blank' href="https://www.transhumancoin.finance/whitepaperthc.pdf">Read WhitePaper</a></li>
 							</ul>
 						</div>
 						<div className="col-sm-2">
@@ -257,7 +207,7 @@ const Layout = (props: any) => {
 					</div>
 					<div className="row mt-5">
 						<div className="col-12 text-muted text-center small-xl">
-							© 2022 - All Rights Reserved
+							© 2022 - All Rights Reserved. Transhuman Coin
 						</div>
 					</div>
 				</div>
@@ -269,7 +219,8 @@ const Layout = (props: any) => {
 			}
 
 			<Outlet />
-		</>)
+		</>
+	)
 }
 
 export default Layout

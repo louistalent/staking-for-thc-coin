@@ -1,6 +1,9 @@
 import { toast } from 'react-toastify';
 import { ethers } from "ethers"
 import { THCTokenContract } from "./config";
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import { InjectedConnector } from '@web3-react/injected-connector';
+import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 
 export const errHandler = (err: any) => {
 	if (err) {
@@ -13,10 +16,11 @@ export const errHandler = (err: any) => {
 			tips(err.message)
 		}
 	} else {
-		console.log("ignorant error")
-		tips("ignorant error")
+		console.log("ignore error")
+		tips("ignore error")
 	}
 }
+
 
 export const tokenData = {
 	THC: {
@@ -42,7 +46,6 @@ export const tips = (html: string) => {
 	toast(html, {
 		position: "top-right",
 		autoClose: 2000,
-		className: 'zindex-r'
 		/* hideProgressBar: false, */
 		/* closeOnClick: true,
 		pauseOnHover: true, */
@@ -76,3 +79,34 @@ export const copyToClipboard = (text: string) => {
 	textField.remove()
 	tips(text);
 };
+
+export const NETWORK_CHAIN_IDS = {
+	mainnet: 56,
+	ropsten: 3,
+	rinkeby: 4,
+	goerli: 5,
+	kovan: 42,
+	localhost: 1337,
+};
+
+export const INFURA_ID = '9aa3d95b3bc440fa88ea12eaa4456161';
+export const INFURA_ENDPOINT = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
+export const walletconnect = new WalletConnectConnector({
+	infuraId: INFURA_ID,
+	bridge: 'https://bridge.walletconnect.org',
+	supportedChainIds: [NETWORK_CHAIN_IDS.mainnet],
+	rpc: { 1: INFURA_ENDPOINT },
+	qrcode: true,
+	// @ts-ignore
+	pollingInterval: 8000,
+});
+
+export const injected = new InjectedConnector({
+	supportedChainIds: [NETWORK_CHAIN_IDS.mainnet],  //, NETWORK_CHAIN_IDS.mainnet
+});
+
+export const walletlink = new WalletLinkConnector({
+	url: INFURA_ENDPOINT,
+	appName: 'Transhuman coin Staking',
+	supportedChainIds: [NETWORK_CHAIN_IDS.mainnet, NETWORK_CHAIN_IDS.mainnet],
+});

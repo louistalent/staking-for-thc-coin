@@ -45,7 +45,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  z-index: 99999;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,13 +57,13 @@
   left: 0;
   top: 0;
   bottom: 0;
-  z-index: 100000;
+  z-index: 51;
   backdrop-filter: blur(1.2px);
   background-color: rgba(48, 50, 54, 0.712);
 }
 
 .modal-body {
-  z-index: 100001;
+  z-index: 52;
   margin: auto auto;
   border-radius: 10px;
 }
@@ -90,7 +90,7 @@
 }
 
 .wallet-modal {
-  max-width: 500px;
+  max-width: 40rem;
 }
 
 @media (max-width:567px) {
@@ -100,11 +100,39 @@
   }
 
   .wallet-modal {
-    max-width: 20rem;
+    max-width: 27rem;
   }
 }
 
-.zindex-r {
-  z-index: 100000000;
-  display: flex;
+@media (max-width:897px) {
+  .wallet-imgs {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .wallet-modal {
+    max-width: 27rem;
+  }
+}
+
+@media (max-width:467px) {
+  .wallet-imgs {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .wallet-modal {
+    max-width: 24rem;
+  }
+}
+
+@media (max-width:410px) {
+  .wallet-imgs {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  .wallet-modal {
+    max-width: 21rem;
+  }
 }

@@ -1,3 +1,6 @@
+iframe{
+	display: none;
+}
 :root {
 	--white: #fff;
 	--black: #000;
@@ -1431,9 +1434,9 @@ input[type=submit].btn-block {
 	opacity: 0
 }
 
-.collapse:not(.show) {
-	display: none
-}
+// .collapse:not(.show) {
+// 	display: none
+// }
 
 .collapsing {
 	position: relative;
@@ -5887,9 +5890,9 @@ input[type="button"].btn-block {
 	opacity: 0;
 }
 
-.collapse:not(.show) {
-	display: none;
-}
+// .collapse:not(.show) {
+// 	display: none;
+// }
 
 .collapsing {
 	position: relative;
@@ -6855,9 +6858,9 @@ input[type="button"].btn-block {
 	display: -ms-flexbox;
 	display: flex;
 	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	-ms-flex-align: center;
-	align-items: center;
+	// align-items: center;
 	-ms-flex-pack: justify;
 	justify-content: space-between;
 	padding: 1.5rem 1.25rem;
@@ -6917,6 +6920,22 @@ input[type="button"].btn-block {
 }
 
 .navbar-collapse {
+	-ms-flex-preferred-size: 100%;
+	flex-basis: 100%;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.navbar-expand .navbar-collapse1 {
+	display: -ms-flexbox !important;
+	display: flex !important;
+	-ms-flex-preferred-size: auto;
+	flex-basis: auto;
+}
+
+.navbar-collapse1 {
 	-ms-flex-preferred-size: 100%;
 	flex-basis: 100%;
 	-ms-flex-positive: 1;
@@ -11023,7 +11042,7 @@ button.bg-dark:focus {
 .pt-7,
 .py-7 {
 	/* BEAU adds padding so dropdown menu on mobile is not overlayed */
-	padding-top: 12rem !important;
+	padding-top: 9rem !important;
 }
 
 .pr-7,
@@ -13741,7 +13760,7 @@ body {
 
 .bg-hero {
 	background-color: #000000;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 800'%3E%3Cg %3E%3Ccircle fill='#000000' cx='400' cy='400' r='600'/%3E%3Ccircle fill='#053529' cx='400' cy='400' r='500'/%3E%3Ccircle fill='#0a634d' cx='400' cy='400' r='400'/%3E%3Ccircle fill='#0e9271' cx='400' cy='400' r='300'/%3E%3Ccircle fill='#13c095' cx='400' cy='400' r='200'/%3E%3Ccircle fill='#1de9b6' cx='400' cy='400' r='100'/%3E%3C/g%3E%3C/svg%3E");
+	// background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 800'%3E%3Cg %3E%3Ccircle fill='#000000' cx='400' cy='400' r='600'/%3E%3Ccircle fill='#053529' cx='400' cy='400' r='500'/%3E%3Ccircle fill='#0a634d' cx='400' cy='400' r='400'/%3E%3Ccircle fill='#0e9271' cx='400' cy='400' r='300'/%3E%3Ccircle fill='#13c095' cx='400' cy='400' r='200'/%3E%3Ccircle fill='#1de9b6' cx='400' cy='400' r='100'/%3E%3C/g%3E%3C/svg%3E");
 	/* background by SVGBackgrounds.com */
 	background-attachment: fixed;
 	background-size: cover;

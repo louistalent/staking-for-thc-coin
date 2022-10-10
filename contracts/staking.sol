@@ -2,7 +2,7 @@
 pragma solidity >=0.4.16 <0.9.0;
 
 /**
- * @title Staking Token (STK)
+ * @title Staking Token (THC)
  * @author louistalent
  * @notice Implements a basic ERC20 staking token with incentive distribution.
  */
@@ -62,7 +62,7 @@ interface IERC20 {
     function mint(uint256 amount) external returns (bool);
 }
 
-contract Staking {
+contract TranshumanCoinStaking {
     using SafeMath2 for uint256;
 
     /**
@@ -168,22 +168,22 @@ contract Staking {
     }
 
     function stakingDateOf(address _sender) public view returns (uint256) {
-        require(stakers[msg.sender].stakingDate != 0, "This staker not exist");
+        require(stakers[msg.sender].stakingDate != 0, "This staker does not exist");
         return stakers[_sender].stakingDate;
     }
 
     function periodOf(address _sender) public view returns (uint256) {
-        require(stakers[msg.sender].stakingDate != 0, "This staker not exist");
+        require(stakers[msg.sender].stakingDate != 0, "This staker does not exist");
         return stakers[_sender].period;
     }
 
     function stakeOf(address _sender) public view returns (uint256) {
-        require(stakers[msg.sender].stakingDate != 0, "This staker not exist");
+        require(stakers[msg.sender].stakingDate != 0, "This staker does not exist");
         return stakers[_sender].stakes;
     }
 
     function rewardOf(address _sender) public view returns (uint256) {
-        require(stakers[msg.sender].stakingDate != 0, "This staker not exist");
+        require(stakers[msg.sender].stakingDate != 0, "This staker does not exist");
         return stakers[_sender].rewards;
     }
 
@@ -243,7 +243,7 @@ contract Staking {
     function removeStaker(address _sender) internal {
         require(
             stakers[msg.sender].stakingDate != 0,
-            "This address not exist."
+            "This address does not exist."
         );
         delete stakers[_sender];
     }
