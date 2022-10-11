@@ -178,12 +178,12 @@ const Staking = () => {
   const handleStaking = async () => {
     try {
       if (chainId !== 56) return tips("Please change network to your wallet.");
-      if (MaxTHCTotalAmountToWallet === 0)
-        return tips("Please enter the amount of THC you want to stake");
-      if (MaxTHCTotalAmountToWallet < 30000)
-        return tips("Hi, you can't stake less than 30,000 THC");
-      if (MaxTHCTotalAmountToWallet > 15000000)
-        return tips("Hey! You can't stake more than 15,000,000 THC");
+      // if (MaxTHCTotalAmountToWallet === 0)
+      //   return tips("Please enter the amount of THC you want to stake");
+      // if (MaxTHCTotalAmountToWallet < 30000)
+      //   return tips("Hi, you can't stake less than 30,000 THC");
+      // if (MaxTHCTotalAmountToWallet > 15000000)
+      //   return tips("Hey! You can't stake more than 15,000,000 THC");
 
       if (!active) return tips("Please connect your wallet");
       // if (loading) return tips("in progress")
@@ -301,6 +301,11 @@ const Staking = () => {
   return (
     <section className="py-7 bg-hero" id="home">
       <div className="container">
+        <h3 className="dashboard-title white-color">
+          <Link to="/dashboard" style={{ color: "white" }}>
+            Dashboard Page
+          </Link>
+        </h3>
         <div className="stake-panel">
           <div className="panel-title">
             <h3>Transhuman Coin Secured Staking Platform</h3>
@@ -356,7 +361,10 @@ const Staking = () => {
           </div>
           <div className={`panel-sm ${statusApp.ido.locked ? "dis-ni" : ""}`}>
             <div className="amount-input-form">
-              <div>Balance: {statusApp.balance} THC</div>
+              <div>
+                Balance: {state.disconnect_able ? THCTotalAmountToWallet : 0}{" "}
+                THC
+              </div>
               <input
                 className="input-amount"
                 type="text"

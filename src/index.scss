@@ -1,6 +1,7 @@
-iframe{
+iframe {
 	display: none;
 }
+
 :root {
 	--white: #fff;
 	--black: #000;
@@ -131,6 +132,26 @@ body {
 	flex-wrap: wrap;
 	margin-right: -1.5rem;
 	margin-left: -1.5rem
+}
+
+.primary-color-1 {
+	color: #00a5ef;
+}
+
+.primary-color-2 {
+	color: #00b35c;
+}
+
+.yellow-color {
+	color: #f2a900;
+}
+
+.white-color {
+	color: white;
+}
+
+.white-colori {
+	color: white !important;
 }
 
 .no-gutters {
@@ -13756,6 +13777,15 @@ body {
 	.vh-md-100 {
 		height: 100vh;
 	}
+
+	.vh-md-70 {
+		height: 70vh;
+	}
+
+}
+
+.text-center {
+	text-align: center;
 }
 
 .bg-hero {
@@ -14144,4 +14174,10 @@ footer h5 {
 	.switcher-wrap {
 		display: none;
 	}
+}
+
+.justify {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
