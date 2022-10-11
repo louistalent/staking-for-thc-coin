@@ -373,7 +373,7 @@ const Dashboard = () => {
                     {state.disconnect_able ? (
                       <>
                         {" "}
-                        {timeFix(countDays)} days : {timeFix(countHours)} :{" "}
+                        {countDays} days : {timeFix(countHours)} :{" "}
                         {timeFix(countMinutes)} : {timeFix(countSeconds)}
                       </>
                     ) : (
