@@ -393,7 +393,7 @@ const Dashboard = () => {
             <div className="chart-container justify mb-2">
               <h5 className="primary-color">
                 everyday reward :{" "}
-                {state.disconnect_able ? everyDayReward.toFixed(5) : 0} THC
+                {state.disconnect_able ? everyDayReward ? everyDayReward.toFixed(5) : 0 : 0} THC
               </h5>
               {state.disconnect_able ? (
                 <LineChart
@@ -425,13 +425,17 @@ const Dashboard = () => {
               ) : (
                 <></>
               )}
-              {locked ? (
-                <></>
-              ) : (
-                <div className="no-chart">
-                  <h1 className="">No chart</h1>
-                </div>
-              )}
+              {
+                state.disconnect_able ?
+                  locked ? (
+                    <></>
+                  ) : (
+                    <div className="no-chart">
+                      <h1 className="">No chart</h1>
+                    </div>
+                  )
+                  : <></>
+              }
             </div>
             <a href="https://bscscan.com/address/0x144960C94c846D30C3b4f373C348ed5f13C1f42a">
               View official THC Staking Contract
