@@ -305,11 +305,11 @@ const Dashboard = () => {
             >
               User Dashboard
             </h2>
-            <h3 className="dashboard-title white-color">
+            {/* <h3 className="dashboard-title white-color">
               <Link to="/" style={{ color: "white" }}>
                 Staking Page
               </Link>
-            </h3>
+            </h3> */}
             <div className="">
               <h4
                 className="heading-black text-capitalize"
@@ -331,8 +331,8 @@ const Dashboard = () => {
                   Staker :{" "}
                   {state.disconnect_able && account
                     ? account.slice(0, 4) +
-                      "..." +
-                      account.slice(account.length - 4, account.length)
+                    "..." +
+                    account.slice(account.length - 4, account.length)
                     : 0}
                 </button>
               </div>
@@ -393,7 +393,7 @@ const Dashboard = () => {
             <div className="chart-container justify mb-2">
               <h5 className="primary-color">
                 everyday reward :{" "}
-                {state.disconnect_able ? everyDayReward.toFixed(5) : 0}
+                {state.disconnect_able ? everyDayReward.toFixed(5) : 0} THC
               </h5>
               {state.disconnect_able ? (
                 <LineChart
