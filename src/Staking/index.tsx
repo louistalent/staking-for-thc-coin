@@ -44,7 +44,7 @@ const Staking = () => {
   const { connect, account, active, library, chainId } = useWallet();
   const [statusApp, setStatusApp] = React.useState<StakingStatus>({
     ido: {
-      lockPeriod: 7,
+      lockPeriod: 90,
       apy: 1.2,
       extendsLockOnRegistration: true,
       earlyUnstakeFee: 36,
@@ -253,7 +253,7 @@ const Staking = () => {
     }
   };
 
-  const approve = () => {};
+  const approve = () => { };
 
   const unstaking = async () => {
     const provider = new ethers.providers.Web3Provider(library.provider);
@@ -312,7 +312,7 @@ const Staking = () => {
           </div>
 
           <div className="period-btn-group">
-            <button
+            {/* <button
               className="btn btn-primary px-5"
               onClick={() => changeStatus(7, 1.2)}
             >
@@ -323,7 +323,7 @@ const Staking = () => {
               onClick={() => changeStatus(30, 1.2 * 4 + 5)}
             >
               30 Days
-            </button>
+            </button> */}
             <button
               className="btn btn-primary px-5"
               onClick={() => changeStatus(90, 1.2 * 13 + 20)}
@@ -420,9 +420,8 @@ const Staking = () => {
             </div>
           </div>
           <div
-            className={`panel-sm align-items-center ${
-              statusApp.claimStatus ? "" : "dis-ni"
-            }`}
+            className={`panel-sm align-items-center ${statusApp.claimStatus ? "" : "dis-ni"
+              }`}
           >
             <div>
               <span>{0} THC</span>
